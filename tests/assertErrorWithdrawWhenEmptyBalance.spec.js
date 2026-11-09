@@ -17,4 +17,12 @@ test('Assert the customer cannot withdraw money with empty balance', async ({
   8. Assert error message is visible:
     'Transaction Failed. You can not withdraw amount more than the balance.'
   */
+    await page.goto('https://www.globalsqa.com/angularJs-protractor/BankingProject/#/customer');
+    await page.locator('select').selectOption({ label: 'Ron Weasly'});
+    await page.getByRole('button', { name: 'Login'}).click();
+    await expect(page.locator('.center').first()).toContainText('Balance : 0');
+    await page.getByRole('button', { name: 'Withdrawl' }).click();
+    await page.getByPlaceholder('amount').fill('1');
+    await page.getByRole('form').getByRole('button', { name: 'Withdraw' }).click();    
+    await expect(page.getByText('Transaction Failed. You can not withdraw amount more than the balance.')).toBeVisible();
 });

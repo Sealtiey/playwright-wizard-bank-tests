@@ -13,4 +13,12 @@ test('Assert correct customer Logout', async ({ page }) => {
     https://www.globalsqa.com/angularJs-protractor/BankingProject/#/customer
   7. Assert the drop-down is present with empty value 
   */
-});
+    await page.goto('https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login');
+    await page.getByRole('button', { name: 'Customer Login'}).click();
+    await page.locator('select').selectOption({ label: 'Neville Longbottom' });
+    await page.getByRole('button', { name: 'Login'}).click();
+    await page.getByRole('button', { name: 'Logout'}).click();
+    await expect(page).toHaveURL('https://www.globalsqa.com/angularJs-protractor/BankingProject/#/customer');
+    await expect(page.getByTestId('userSelect')).toBeVisible();
+    await expect(page.getByTestId('userSelect')).toHaveValue('');
+  });

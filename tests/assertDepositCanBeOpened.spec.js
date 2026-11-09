@@ -25,4 +25,18 @@ test('Assert the deposit can be opened', async ({ page }) => {
   - Generate random amount using below. Then use the "amount" in the test.  
     const amount = faker.number.int(100).toString();
   */
-});
+    await page.goto('https://www.globalsqa.com/angularJs-protractor/BankingProject/#/customer');
+    await page.locator('select').selectOption({ label: 'Harry Potter'});
+    await page.getByRole('button', { name: 'Login'}).click();
+    await page.getByRole('button', { name: 'Deposit'}).click();
+    const amount = faker.number.int(100).toString();
+    await page.getByPlaceholder('amount').fill(amount);
+    await page.getByRole('form').getByRole('button', { name: 'Deposit' }).click();    
+    await expect(page.getByText('Deposit Successful')).toBeVisible();
+    await expect(page.locator('.center').first()).toContainText(`Balance : ${amount}`);    
+    await page.getByRole('button', { name: 'Transactions' }).click();
+    await expect(page.getByText('Amount', { exact: true })).toBeVisible();    
+    await page.reload();
+    await expect(page.getByRole('cell', { name: amount })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Credit' })).toBeVisible();
+  });
